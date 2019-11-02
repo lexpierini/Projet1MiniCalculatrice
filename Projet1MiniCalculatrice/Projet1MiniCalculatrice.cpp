@@ -4,6 +4,7 @@
 #include <conio.h>
 
 using namespace std;
+char choixParametres;
 
 // DÉCLARATION DES FONCTIONS
 void version1();
@@ -11,6 +12,7 @@ void version2();
 void version3();
 void menuParametres();
 void menuAide();
+int quitter();
 bool estOperateur(char op);
 
 
@@ -35,7 +37,14 @@ int main() {
 	switch (choixMenuGeneral)
 	{
 		case '1': 
-			version1();
+			if (choixParametres == 1 )
+			{
+				version1();
+			}
+			else
+			{
+				version2();
+			}
 			break;
 		case '2': 
 			menuParametres();
@@ -47,7 +56,7 @@ int main() {
 			return 0;
 			break;
 		case 'q':
-			return 0;
+			quitter();
 			break;
 		default:
 			system("cls");
@@ -145,7 +154,7 @@ void version1(){
 
 void version2(){
 
-	string operation, temp;
+	string operation = "", operationPropre = "", temp = "";
 	int n1 = 0, n2 = 0, resultat = 0;
 	char operateur = ' ';
 
@@ -154,24 +163,73 @@ void version2(){
 	cout << setfill('-') << setw(58) << ("-") << endl;
 	cout << "SAISIE D\x27UNE OPERATION: ";
 	getline(cin, operation);
-	
-	for (int i = 0; i < size(operation); i++)
-	{
-		if (isdigit(operation[i]))
-		{
-			temp = temp + operation[i];
-		}
-		else if (estOperateur(operation[i]))
-		{
-			operateur = operation[i];
-			n1 = stoi(temp);
-			temp = "";
-		}
 
+	//Laisse la variable propre pour une opération mathématique de base.
+	for (int i = 0; i < operation.size(); i++)
+	{
+		if (isdigit(operation[i]) || estOperateur(operation[i]))
+		{
+			if (isdigit(operation[i]))
+			{
+				operationPropre = operationPropre + operation[i];
+			}
+			else if (estOperateur(operationPropre[operationPropre.size() - 1]) && operation[i] != '-')
+			{
+				continue;
+			}
+			else
+			{
+				operationPropre = operationPropre + operation[i];
+			}
+		}
 	}
 
-		n2 = stoi(temp);
+	//Trier les numéros et les opérateurs.
+	for (int i = 0; i < size(operationPropre); i++)
+	{
+		if (isdigit(operationPropre[i]))
+		{
+			temp = temp + operationPropre[i];
+		}
+		else if (estOperateur(operationPropre[i]))
+		{
+			if (operateur == ' ')
+			{
+				operateur = operationPropre[i];
+				n1 = stoi(temp);
+				temp = "";
+			}
+			else
+			{
+				n2 = stoi(temp);
+				switch (operateur)
+				{
+				case '+':
+					resultat = n1 + n2;
+					break;
+				case '-':
+					resultat = n1 - n2;
+					break;
+				case '*':
+					resultat = n1 * n2;
+					break;
+				case '/':
+					resultat = n1 / n2;
+					break;
 
+				default:
+					cout << "L""\x027""expression que vous avez entr""\0xA7""ée n""\x027""est pas valide.";
+					break;
+				}
+				n1 = resultat;
+				operateur = operationPropre[i];
+				temp = "";
+			}					
+		}	
+	}
+	n2 = stoi(temp);
+
+	//Faire les opérations mathématiques.
 	switch (operateur)
 	{
 	case '+':
@@ -195,12 +253,11 @@ void version2(){
 	system("cls");
 	cout << "PROJET 1 - MINI CALCULATRICE - VERSION (2)\n";
 	cout << setfill('-') << setw(58) << ("-") << endl;
-	cout << "SAISIE D\x27UNE OPERATION: " << n1 << operateur << n2 << " = " << resultat << endl;
+	cout << "SAISIE D\x27UNE OPERATION: " << operationPropre << " = " << resultat << endl;
 	cout << setfill('-') << setw(58) << ("-") << endl;
 	cout << "Appuyez sur une touche pour revenir au menu g\x82n\x82ral\n";
 	system("pause >> null");
 	main();
-	
 }
 
 void version3() {
@@ -218,8 +275,6 @@ void version3() {
 }
 
 void menuParametres() {
-
-	char choixParametres;
 
 	system("cls");
 
@@ -241,9 +296,11 @@ void menuParametres() {
 	switch (choixParametres)
 	{
 		case '1': 
+			choixParametres = 1;
 			version1(); 
 			break;
 		case '2':
+			choixParametres = 2;
 			version2();
 			break;
 		case '3':
@@ -280,13 +337,14 @@ void menuAide() {
 int quitter()
 {
 	system("cls");
-	cout << setfill('-') << setw(28) << ("-") << endl;
+	cout << setfill('-') << setw(41) << ("-") << endl;
 	cout << "PROJET 1 - MINI CALCULATRICE\n";
-	cout << setfill('-') << setw(28) << ("-") << endl;
+	cout << setfill('-') << setw(41) << ("-") << endl;
 	cout << "FIN DU PROGRAMME\n";
 	cout << "Merci d'avoir utilise la MiniCalculatrice\n";
-	cout << setfill('-') << setw(40) << "-" << endl;
+	cout << setfill('-') << setw(41) << "-" << endl;
 	cout << "Appuyez sur une touche pour finir\n";
+	cout << endl << endl << endl;
 	return 0;
 }
 
