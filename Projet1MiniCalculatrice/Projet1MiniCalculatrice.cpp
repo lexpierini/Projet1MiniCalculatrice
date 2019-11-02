@@ -71,40 +71,48 @@ void version1(){
 	cout << "SAISIE D\x27UNE OPERATION: ";
 	getline(cin, operation);
 
+	//Laisse la variable propre pour une opération mathématique de base.
 	for (int i = 0; i < operation.size(); i++)
 	{
 		if (isdigit(operation[i]) || estOperateur(operation[i]))
 		{
-			operationPropre = operationPropre + operation[i];
-																		
-			//if (operationPropre[i-1] != '+' && operationPropre[i-1] != '*' && operationPropre[i - 1] != '/')
-
-			if (operationPropre[i] == operationPropre[i-1] && operationPropre[i] == '+' && operationPropre[i] == '*' && operationPropre[i] == '/')
+			if (isdigit(operation[i]))
 			{
-				operationPropre[i] = ' ';
+				operationPropre = operationPropre + operation[i];
+			}
+			else if (estOperateur(operationPropre[operationPropre.size()-1]) && operation[i] != '-')
+			{
+				continue;
+			}
+			else
+			{
+				operationPropre = operationPropre + operation[i];
 			}
 		}
 	}
 
-	cout << operationPropre << endl;
-
-	/*
-	for ( int i = 0; i < size(operation); i++)
+	//Trier les numéros et les opérateurs.
+	for ( int i = 0; i < size(operationPropre); i++)
 	{
-		if (isdigit(operation[i]))
+		if (isdigit(operationPropre[i]))
 		{
-			temp = temp + operation[i];
+			temp = temp + operationPropre[i];
 		}
-		else if (estOperateur(operation[i]))
+		else if (estOperateur(operationPropre[i]) && operateur == ' ')
 		{
-			operateur = operation[i];
+			operateur = operationPropre[i];
 			n1 = stoi(temp);
 			temp = "";
-		} 
+		}
+		else
+		{
+			temp = temp + operationPropre[i];
+		}
 	}
 
 	n2 = stoi(temp);
 
+	//Faire les opérations mathématiques.
 	switch (operateur)
 	{
 	case '+':
@@ -133,7 +141,6 @@ void version1(){
 	cout << "Appuyez sur une touche pour revenir au menu g\x82n\x82ral\n";
 	system("pause >> null");
 	main();
-	*/
 }
 
 void version2(){
