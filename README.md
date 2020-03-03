@@ -1,6 +1,7 @@
 # Projet1MiniCalculatrice
 
 Premier projet d'introduction à programmation École Andre Grasset après 2 mois de cours.
+École Andre Grasset, DEC Techniques de l'Informatique Profil Programmation Nouveaux Médias.
 
 Début du projet: 06 octobre 2019
 
